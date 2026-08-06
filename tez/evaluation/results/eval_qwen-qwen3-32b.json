@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "generator_model": "qwen/qwen3-32b",
+    "total_questions": 100,
+    "timestamp": "2026-03-23 20:27:42",
+    "judge_model": "openai/gpt-oss-120b",
+    "judge_name": "GPT-OSS 120B",
+    "generation_path": "shared_contexts+production_mcq_generator",
+    "shared_context_file": "C:\\proje\\quiz-ai\\tez\\evaluation\\data\\shared_rag_contexts.json",
+    "shared_context_metadata": {
+      "created_at": "2026-03-23T01:17:46.069193",
+      "source_topics_file": "C:\\proje\\quiz-ai\\tez\\evaluation\\data\\topics.json",
+      "experiment_type": "shared_frozen_rag_contexts",
+      "retrieval_top_k": 5,
+      "retrieval_min_score": 0.25,
+      "total_topics": 100
+    }
+  },
+  "model_comparison": {
+    "question_quality": {
+      "mean": 0.8325,
+      "std": 0.2429377492280687,
+      "count": 100,
+      "median": 0.9,
+      "min": 0.0,
+      "max": 1.0,
+      "stderr": 0.02429377492280687,
+      "ci95_low": 0.7848842011512985,
+      "ci95_high": 0.8801157988487015
+    },
+    "answer_correctness": {
+      "mean": 0.93,
+      "std": 0.2238302928559939,
+      "count": 100,
+      "median": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "stderr": 0.02238302928559939,
+      "ci95_low": 0.8861292626002253,
+      "ci95_high": 0.9738707373997748
+    },
+    "distractor_quality": {
+      "mean": 0.36,
+      "std": 0.3730951621235526,
+      "count": 100,
+      "median": 0.5,
+      "min": 0.0,
+      "max": 1.0,
+      "stderr": 0.03730951621235526,
+      "ci95_low": 0.2868733482237837,
+      "ci95_high": 0.4331266517762163
+    },
+    "answer_relevancy": {
+      "mean": 0.968,
+      "std": 0.11906300852909774,
+      "count": 100,
+      "median": 1.0,
+      "min": 0.5,
+      "max": 1.0,
+      "stderr": 0.011906300852909774,
+      "ci95_low": 0.9446636503282968,
+      "ci95_high": 0.9913363496717031
+    }
+  }
+}
