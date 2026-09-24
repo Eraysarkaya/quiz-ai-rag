@@ -1,6 +1,8 @@
 # Quiz AI
 
-Öğrencilerin seçtikleri fen bilimleri konusu ve zorluk düzeyinde pratik yapabilmesi için çoktan seçmeli sorular hazırlayan web uygulaması. Soru üretirken ilgili bilgileri SciQ veri kümesinde arayan bir RAG akışı kullanır; sınav sonuçlarını ve ilerlemeyi kaydeder. Mezuniyet projesi olarak geliştirilmiştir.
+Fen bilimleri için kaynaklara dayalı çoktan seçmeli sorular hazırlayan yapay zekâ destekli eğitim uygulaması.
+
+Fen bilimleri konularında çoktan seçmeli sorular üreten bir mezuniyet projesi. Kullanıcı konu ve zorluk düzeyini seçer; uygulama ilgili içerikleri SciQ veri kümesinden oluşturulmuş FAISS indeksinde arar ve Groq üzerinden çalışan dil modeliyle soru üretir. Sorular, açıklamalar ve sonuçlar uygulamada görüntülenir; geçmiş ve ilerleme kaydedilir.
 
 ## Ekran görüntüleri
 
