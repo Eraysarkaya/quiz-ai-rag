@@ -1,136 +1,73 @@
 # Quiz AI
 
-Quiz AI is an open-source graduation project for generating science quizzes with retrieval-augmented generation (RAG). A Next.js frontend connects to a FastAPI service that checks the request domain, searches a semantic cache, retrieves from a FAISS index and validates questions generated through Groq. It also includes authentication, quiz history and an evaluation workflow.
+Fen bilimleri konularında çoktan seçmeli sorular üreten bir mezuniyet projesi. Kullanıcı konu ve zorluk düzeyini seçer; uygulama ilgili içerikleri SciQ veri kümesinden oluşturulmuş FAISS indeksinde arar ve Groq üzerinden çalışan dil modeliyle soru üretir. Sorular, açıklamalar ve sonuçlar uygulamada görüntülenir; geçmiş ve ilerleme kaydedilir.
 
-**Technical focus:** reproducible data preparation, retrieval and evaluation, alongside a usable full-stack application.
+## Ekran görüntüleri
 
-## Highlights
+| Ana sayfa | Soru | Sonuçlar |
+| --- | --- | --- |
+| ![Quiz AI ana sayfası](docs/screenshots/01-home.png) | ![Oluşturulan soru](docs/screenshots/02-question.png) | ![Sınav sonucu](docs/screenshots/03-results.png) |
 
-- Generates multiple-choice science questions by topic and difficulty.
-- Grounds generation in a FAISS vector index built from the SciQ dataset.
-- Detects out-of-domain requests and reuses semantically similar cached questions.
-- Supports email/password and optional Google authentication.
-- Saves quiz history, progress, preferences, scores, and explanations.
-- Evaluates model outputs with embedding metrics and LLM-as-judge criteria.
+## Özellikler
 
-## Technology
+- Konu ve zorluk düzeyine göre çoktan seçmeli soru oluşturma
+- SciQ verisi üzerinde FAISS ile kaynak bulma
+- Konu dışı istekleri ayırma ve benzer istekler için semantik önbellek
+- E-posta/parola ile giriş; isteğe bağlı Google girişi
+- Sınav geçmişi, puanlar, ilerleme ve açıklamalar
+- Üretilen soruları karşılaştırmak için ayrı değerlendirme betikleri
 
-- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS
-- **Backend:** FastAPI, Pydantic, SQLite
-- **AI/RAG:** Groq, Sentence Transformers, FAISS, SciQ
-- **Evaluation:** pandas, scikit-learn, SciPy, Matplotlib, Seaborn
+## Kullanılan teknolojiler
 
-## Architecture
+- **Arayüz:** Next.js 16, React 19, TypeScript, Tailwind CSS
+- **API ve veri:** FastAPI, Pydantic, SQLite
+- **Soru üretimi:** Groq, Sentence Transformers, FAISS, SciQ
+- **Değerlendirme:** pandas, scikit-learn, SciPy, Matplotlib, Seaborn
 
-```text
-Next.js client
-    |
-    v
-FastAPI routes ──> authentication and SQLite persistence
-    |
-    v
-OOD detector ──> semantic cache ──> FAISS retrieval ──> Groq MCQ generation
-                                                     |
-                                                     v
-                                           validation + explanation
-```
+Akış kabaca şöyledir: **Next.js → FastAPI → konu dışı istek kontrolü → semantik önbellek → FAISS araması → soru üretimi → çıktı doğrulama**. Uygulama kodu `backend/app` ve `frontend/src` içindedir; deney ve değerlendirme çalışmaları `tez/evaluation` altında yer alır.
 
-The application code lives in `backend/app` and `frontend/src`. Thesis experiments and reproducible evaluation scripts live in `tez/evaluation`.
+## Yerel kurulum
 
-## Local setup
+Python 3.11 veya üzeri ve Node.js gerekir. API anahtarı için Groq hesabı gereklidir.
 
-### 1. Backend
-
-Python 3.11 or newer is recommended.
+### Backend
 
 ```bash
 python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# macOS/Linux
 source .venv/bin/activate
-
 pip install -r requirements.txt
-copy .env.example .env            # Windows
-# cp .env.example .env            # macOS/Linux
-```
-
-Set `GROQ_API_KEY` in `.env`. Google OAuth values are optional for local email/password authentication. Use a unique `JWT_SECRET_KEY` outside development.
-
-Start the API from the repository root:
-
-```bash
+cp .env.example .env
 uvicorn backend.app.main:app --reload
 ```
 
-Health check: `http://localhost:8000/api/health`
+Windows'ta sanal ortamı `.venv\Scripts\activate` ile açın ve `cp` yerine `copy` kullanın. `.env` içine `GROQ_API_KEY` girin; geliştirme dışındaki ortamlarda farklı bir `JWT_SECRET_KEY` belirleyin. Google girişini kullanacaksanız OAuth değişkenlerini de doldurun. API: `http://localhost:8000`.
 
-### 2. Frontend
+### Frontend
+
+Ayrı bir terminalde:
 
 ```bash
 cd frontend
 npm install
-copy .env.example .env.local      # Windows
-# cp .env.example .env.local      # macOS/Linux
+cp .env.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Windows'ta yine `copy` kullanın. Uygulama: `http://localhost:3000`.
 
-## Knowledge base
+## Veri ve testler
 
-Processed corpus and FAISS artifacts are included for reproducibility. To rebuild them:
-
-```bash
-python backend/scripts/load_dataset.py
-python backend/scripts/chunking.py
-python backend/scripts/build_index.py
-```
-
-## Evaluation
-
-The evaluation workflow compares generated question sets using correctness, faithfulness, retrieval utility, distractor plausibility, and diversity metrics.
+FAISS indeksi ve işlenmiş veriler repository'de bulunur. Baştan üretmek için kök dizinden sırayla `python backend/scripts/load_dataset.py`, `python backend/scripts/chunking.py` ve `python backend/scripts/build_index.py` çalıştırılabilir.
 
 ```bash
+python -m unittest discover -s backend/tests -v
 python tez/evaluation/scripts/run_full_experiment.py
 ```
 
-Generated reports are written under `tez/evaluation/results/reports`.
+Frontend için `frontend` dizininde `npm run lint` ve `npm run build` çalıştırın. Değerlendirme çıktıları `tez/evaluation/results/reports` altına yazılır.
 
-## Quality checks
+**Durum:** Bu proje yerel olarak çalıştırılabilen akademik/portföy çalışmasıdır. Üretilen sorular hatalı olabilir; önemli kararlar için ayrıca doğrulanmalıdır. API anahtarlarını ve yerel veritabanlarını Git'e eklemeyin.
 
-```bash
-cd frontend
-npm run lint
-npm run build
-```
+## Lisans
 
-Backend and evaluation syntax can be checked with:
-
-```bash
-python -m compileall backend/app tez/evaluation
-python -m unittest discover -s backend/tests -v
-```
-
-## Screenshots
-
-![Quiz AI home](docs/screenshots/01-home.png)
-
-![Generated question](docs/screenshots/02-question.png)
-
-![Quiz results](docs/screenshots/03-results.png)
-
-## Security and data
-
-- Never commit `.env` files or API credentials.
-- Runtime SQLite databases are local and ignored by Git.
-- The generated questions may contain errors and should be verified for high-stakes use.
-- Revoke an API key immediately if it is pasted into an issue, commit, screenshot, or chat.
-
-## Project status
-
-This is a portfolio and academic project intended for local demonstration. A hosted deployment is not required to review the code or reproduce the evaluation.
-
-## License
-
-See the repository's [`LICENSE`](LICENSE) file for the MIT terms.
+[MIT](LICENSE).
