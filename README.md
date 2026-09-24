@@ -1,6 +1,8 @@
 # Quiz AI
 
-Quiz AI is a full-stack science quiz generator built as a graduation project. It combines retrieval-augmented generation (RAG), a Groq-hosted language model, semantic caching, authentication, quiz history, and an evaluation pipeline for comparing generated questions.
+Quiz AI is an open-source graduation project for generating science quizzes with retrieval-augmented generation (RAG). A Next.js frontend connects to a FastAPI service that checks the request domain, searches a semantic cache, retrieves from a FAISS index and validates questions generated through Groq. It also includes authentication, quiz history and an evaluation workflow.
+
+**Technical focus:** reproducible data preparation, retrieval and evaluation, alongside a usable full-stack application.
 
 ## Highlights
 
@@ -131,4 +133,4 @@ This is a portfolio and academic project intended for local demonstration. A hos
 
 ## License
 
-MIT
+See the repository's [`LICENSE`](LICENSE) file for the MIT terms.
